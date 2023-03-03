@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,8 @@ namespace Web_Bot
 {
     class Program
     {
-        
+        //public By vote = By.XPath("//div[text()=\"ГОЛОСОВАТЬ\"]");
+        //public By kapCha = By.ClassName("rc-anchor-center-item rc-anchor-checkbox-label");
 
         static void Main(string[] args)
         {
@@ -21,52 +23,100 @@ namespace Web_Bot
             IWebDriver driver;
             IWebElement webElement;
 
+            By vote = By.XPath("//div[text()=\"ГОЛОСОВАТЬ\"]");
+            By kapCha = By.CssSelector("div.recaptcha-checkbox-spinner");
+            By kapChaCheckBox = By.CssSelector("div.recaptcha-checkbox-spinner");
 
             var options = new ChromeOptions();
 
             options.AddArguments("--user-data-dir=C:\\Users\\1\\AppData\\Local\\Google\\Chrome\\User Data");
-            //options.AddArguments("--no - sandbox");
-            options.AddArguments("--headless=new");
-            options.AddArguments("--disable-gpu");
-            //options.AddArguments("--window-size=1920,1080");
+            ///////options.AddArguments("--no - sandbox");
+            //options.AddArguments("--headless=new");
+            //options.AddArguments("--disable-gpu");
+            options.AddArguments("--window-size=1920,1080");
 
             driver = new ChromeDriver(options);
 
+            //webElement = driver.FindElement(By.XPath("//div[text()=\"ГОЛОСОВАТЬ\"]"));
             //driver.Manage().Window.Maximize(); //на полныйй экран
             driver.Navigate().GoToUrl("https://zombyland.wargm.ru/server/61439/votes");
-            //driver.Navigate().GoToUrl("https://google.ru");
 
-            System.Threading.Thread.Sleep(GetRandomTime());
+            //webElement = driver.FindElement(By.XPath("//div[text()=\"ГОЛОСОВАТЬ\"]"));
 
-            CreateScreenshot(driver, CreateDirectory());
+            System.Threading.Thread.Sleep(10000);
 
-            webElement = driver.FindElement(By.XPath("//div[text()=\"ГОЛОСОВАТЬ\"]"));
-            webElement.Click();
+            ClickVote(driver, webElement = driver.FindElement(vote));
 
-            System.Threading.Thread.Sleep(GetRandomTime());
+            System.Threading.Thread.Sleep(5000);
 
-            CreateScreenshot(driver, CreateDirectory());
+            //CheckElement(driver, webElement, kapCha);
 
-            //*********
+            if (CheckElement(driver, webElement, kapCha))
+            {
+                CreateScreenshot(driver, CreateDirectory());
 
-            System.Threading.Thread.Sleep(GetRandomTime());
+                webElement = driver.FindElement(kapChaCheckBox);
+                System.Threading.Thread.Sleep(5000);
+                webElement.Click();
+
+                CreateScreenshot(driver, CreateDirectory());
+            }
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.CssSelector("iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")));
+
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//span[@class='recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox']/div[@class='recaptcha-checkbox-checkmark']"))).Click();
+
+            if (CheckElement(driver, webElement, vote))
+            {
+                ClickVote(driver, webElement = driver.FindElement(vote));
+            }
+
+
+
+                System.Threading.Thread.Sleep(5000);
+            //***************************************
 
             driver.Navigate().GoToUrl("https://zombyland.wargm.ru/server/60694/votes");
-            //driver.Navigate().GoToUrl("https://google.ru");
 
-            System.Threading.Thread.Sleep(GetRandomTime());
+            System.Threading.Thread.Sleep(10000);
 
-            CreateScreenshot(driver, CreateDirectory());
+            ClickVote(driver, webElement = driver.FindElement(vote));
 
-            webElement = driver.FindElement(By.XPath("//div[text()=\"ГОЛОСОВАТЬ\"]"));
-            webElement.Click();
+            System.Threading.Thread.Sleep(5000);
 
-            System.Threading.Thread.Sleep(GetRandomTime());
+            CheckElement(driver, webElement, kapCha);
 
-            CreateScreenshot(driver, CreateDirectory());
+            if (CheckElement(driver, webElement, kapCha))
+            {
+                CreateScreenshot(driver, CreateDirectory());
+                
+                webElement = driver.FindElement(kapChaCheckBox);
 
+                System.Threading.Thread.Sleep(3000);
+
+                webElement.Click();
+
+                CreateScreenshot(driver, CreateDirectory());
+            }
+
+            System.Threading.Thread.Sleep(5000);
             //*********
             driver.Quit();
+        }
+
+        static void ClickVote(IWebDriver driver, IWebElement webElement)
+        {
+            System.Threading.Thread.Sleep(GetRandomTime());
+
+            CreateScreenshot(driver, CreateDirectory());
+
+            webElement.Click();
+                        
+            CreateScreenshot(driver, CreateDirectory());
+
         }
 
         static void KillChrome()
@@ -108,17 +158,43 @@ namespace Web_Bot
             Random rnd = new Random();
 
             //Получить случайное число 
-            int value = rnd.Next(40000, 80000);
+            int value = rnd.Next(10000, 20000);
 
             //Вернуть полученное значение
             return value;
         }
 
-        public bool CheckKapCha(IWebElement webElement)
+        //static bool CheckKapCha(IWebDriver driver, IWebElement webElement)
+        //{
+        //    try
+        //    {
+        //        driver.FindElement(By.ClassName("rc-anchor-center-item rc-anchor-checkbox-label"));
+        //        return true;
+        //    }
+        //    catch (NoSuchElementException)
+        //    {
+
+        //        return false;
+        //    }
+            
+        //}
+
+        //static void KapChaClik(IWebDriver driver,IWebElement webElement)
+        //{
+           
+        //    if (CheckKapCha(webElement))
+        //    {
+        //        webElement = driver.FindElement(By.ClassName("recaptcha-checkbox-border"));
+        //        webElement.Click();
+        //    }
+            
+        //}
+
+        static bool CheckElement(IWebDriver driver,IWebElement webElement,By by)
         {
             try
             {
-                webElement.FindElement(By.ClassName("rc-anchor-center-item rc-anchor-checkbox-label"));
+                driver.FindElement(by);
                 return true;
             }
             catch (NoSuchElementException)
@@ -126,18 +202,7 @@ namespace Web_Bot
 
                 return false;
             }
-            
-        }
 
-        public void KapChaClik(IWebDriver driver,IWebElement webElement)
-        {
-           
-            if (CheckKapCha(webElement))
-            {
-                webElement = driver.FindElement(By.ClassName("recaptcha-checkbox-border"));
-                webElement.Click();
-            }
-            
         }
 
     }
