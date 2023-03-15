@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,32 @@ namespace Web_Bot
 {
     class Program
     {
-        //public By vote = By.XPath("//div[text()=\"ГОЛОСОВАТЬ\"]");
-        //public By kapCha = By.ClassName("rc-anchor-center-item rc-anchor-checkbox-label");
+
+        static void KillChrome()
+        {
+            if (Process.GetProcessesByName("chrome") != null)
+            {
+                Process[] chromeInstances = Process.GetProcessesByName("chrome");
+
+                foreach (Process item in chromeInstances)
+                {
+                    item.Kill();
+                }
+            }
+        }
 
         static void Main(string[] args)
         {
             KillChrome();
 
+            WorkBot workBot = new WorkBot();
+            string url = "https://zombyland.wargm.ru/server/61439/votes";
+            workBot.Vote(url);
+
+            string url2 = "https://zombyland.wargm.ru/server/60694/votes";
+            workBot.Vote(url2);
+
+            /*
             IWebDriver driver;
             IWebElement webElement;
 
@@ -51,23 +71,27 @@ namespace Web_Bot
 
             //CheckElement(driver, webElement, kapCha);
 
-            if (CheckElement(driver, webElement, kapCha))
-            {
-                CreateScreenshot(driver, CreateDirectory());
+            //if (CheckElement(driver, webElement, kapCha))
+            //{
+            //    CreateScreenshot(driver, CreateDirectory());
 
-                webElement = driver.FindElement(kapChaCheckBox);
-                System.Threading.Thread.Sleep(5000);
-                webElement.Click();
+            //    webElement = driver.FindElement(kapChaCheckBox);
+            //    System.Threading.Thread.Sleep(5000);
+            //    webElement.Click();
 
-                CreateScreenshot(driver, CreateDirectory());
-            }
+            //    CreateScreenshot(driver, CreateDirectory());
+            //}
 
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
 
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.CssSelector("iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")));
 
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//span[@class='recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox']/div[@class='recaptcha-checkbox-checkmark']"))).Click();
+            Actions action = new Actions(driver);
+            action.MoveToElement(webElement = driver.FindElement(By.CssSelector("div.recaptcha-checkbox-checkmark"))).Click().Perform();
+
+
+            //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("div.recaptcha-checkbox-checkmark"))).Click();
 
             if (CheckElement(driver, webElement, vote))
             {
@@ -89,18 +113,18 @@ namespace Web_Bot
 
             CheckElement(driver, webElement, kapCha);
 
-            if (CheckElement(driver, webElement, kapCha))
-            {
-                CreateScreenshot(driver, CreateDirectory());
+            //if (CheckElement(driver, webElement, kapCha))
+            //{
+            //    CreateScreenshot(driver, CreateDirectory());
                 
-                webElement = driver.FindElement(kapChaCheckBox);
+            //    webElement = driver.FindElement(kapChaCheckBox);
 
-                System.Threading.Thread.Sleep(3000);
+            //    System.Threading.Thread.Sleep(3000);
 
-                webElement.Click();
+            //    webElement.Click();
 
-                CreateScreenshot(driver, CreateDirectory());
-            }
+            //    CreateScreenshot(driver, CreateDirectory());
+            //}
 
             System.Threading.Thread.Sleep(5000);
             //*********
@@ -119,15 +143,7 @@ namespace Web_Bot
 
         }
 
-        static void KillChrome()
-        {
-            Process[] chromeInstances = Process.GetProcessesByName("chrome");
-            foreach (Process item in chromeInstances)
-            {
-                item.Kill();
-            }
 
-        }
 
         static string CreateDirectory()
         {
@@ -204,6 +220,8 @@ namespace Web_Bot
             }
 
         }
+        */
 
+        }
     }
 }
