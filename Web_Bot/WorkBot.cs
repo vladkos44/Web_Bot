@@ -71,11 +71,11 @@ namespace Web_Bot
             }
             catch (Exception ex)
             {
-                CreateScreenshot(CreateDirectory());
+                //CreateScreenshot(CreateDirectory());
 
                 Console.WriteLine("Что то пошло не так: " + ex.Message);
                 //Console.ReadLine();
-                DriverQuit();
+                //DriverQuit();
             }
             //finally
             //{
