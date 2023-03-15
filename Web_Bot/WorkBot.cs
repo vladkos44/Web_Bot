@@ -74,6 +74,7 @@ namespace Web_Bot
                 CreateScreenshot(CreateDirectory());
 
                 Console.WriteLine("Что то пошло не так: " + ex.Message);
+                //Console.ReadLine();
             }
             finally
             {
