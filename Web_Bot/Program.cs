@@ -39,6 +39,8 @@ namespace Web_Bot
             string url2 = "https://zombyland.wargm.ru/server/60694/votes";
             workBot.Vote(url2);
 
+            workBot.DriverQuit();
+
             /*
             IWebDriver driver;
             IWebElement webElement;

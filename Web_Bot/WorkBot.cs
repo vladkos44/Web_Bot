@@ -75,11 +75,12 @@ namespace Web_Bot
 
                 Console.WriteLine("Что то пошло не так: " + ex.Message);
                 //Console.ReadLine();
+                DriverQuit();
             }
-            finally
-            {
-                driver.Quit();
-            }
+            //finally
+            //{
+            //    driver.Quit();
+            //}
         }
 
         private bool CheckElement(WebDriverWait wait, By by)
@@ -119,6 +120,11 @@ namespace Web_Bot
 
             string friendlyDatetime = String.Format("{0:yyyy-MM-dd_hh-mm-ss}", DateTime.Now);
             screenshot.SaveAsFile(folderPath + friendlyDatetime + ".jpg", ScreenshotImageFormat.Jpeg);
+        }
+
+        public void DriverQuit()
+        {
+            driver.Quit();
         }
 
     }
