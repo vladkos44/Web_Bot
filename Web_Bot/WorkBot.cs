@@ -21,18 +21,18 @@ namespace Web_Bot
         By _kapChaCheckBox = By.CssSelector("div.recaptcha-checkbox-checkmark");
         By _googleKapCha = By.CssSelector("iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']");
 
-        //string _url;
+        string _url;
 
-        public WorkBot()
+        public WorkBot(string argProf)
         {
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--user-data-dir=C:\\Users\\1\\AppData\\Local\\Google\\Chrome\\User Data");
-            options.AddArgument("--profile-directory=Default");
+            options.AddArgument(argProf);
             //options.AddArgument("--profile-directory=Profile 1");
             //options.AddArguments("--headless=new");
             //options.AddArguments("--disable-gpu");
             options.AddArguments("--window-size=1920,1080");
-            driver = new ChromeDriver(options);
+            driver = new ChromeDriver(options);            
         }
 
         public void Vote(string _url)
