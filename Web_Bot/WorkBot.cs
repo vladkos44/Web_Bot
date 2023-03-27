@@ -40,6 +40,9 @@ namespace Web_Bot
             try
             {
                 driver.Navigate().GoToUrl(_url);
+
+                System.Threading.Thread.Sleep(5000);
+
                 wait = new WebDriverWait(driver, TimeSpan.FromSeconds(12));
 
                 if (CheckElement(wait, _vote))
@@ -103,7 +106,7 @@ namespace Web_Bot
 
         private string CreateDirectory()
         {
-            string DirectoryDatetime = String.Format("{0:yyyy-MM-dd_hh}", DateTime.Now);
+            string DirectoryDatetime = String.Format("{0:yyyy-MM-dd_hh_mm}", DateTime.Now);
 
             string folderPath = @"C:\!!Screen Web_Bot\" + DirectoryDatetime + @"\";
 
