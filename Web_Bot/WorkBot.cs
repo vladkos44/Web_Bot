@@ -106,9 +106,9 @@ namespace Web_Bot
 
         private string CreateDirectory()
         {
-            string DirectoryDatetime = String.Format("{0:yyyy-MM-dd_hh_mm}", DateTime.Now);
+            string folderName  = DateTime.Now.ToString("yyyy_MM_dd_hh");
 
-            string folderPath = @"C:\!!Screen Web_Bot\" + DirectoryDatetime + @"\";
+            string folderPath = @"C:\!!Screen Web_Bot\" + folderName  + @"\";
 
             if (!Directory.Exists(folderPath))
             {
@@ -123,7 +123,7 @@ namespace Web_Bot
             ITakesScreenshot screenshotDriver = driver as ITakesScreenshot;
             Screenshot screenshot = screenshotDriver.GetScreenshot();
 
-            string friendlyDatetime = String.Format("{0:yyyy-MM-dd_hh-mm-ss}", DateTime.Now);
+            string friendlyDatetime = String.Format("{0:yyyy-MM-dd_hh-mm}", DateTime.Now);
             screenshot.SaveAsFile(folderPath + friendlyDatetime + ".jpg", ScreenshotImageFormat.Jpeg);
         }
 

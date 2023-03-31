@@ -32,27 +32,48 @@ namespace Web_Bot
         {
             KillChrome();
 
-            string argProf1 = "--profile-directory=Default";
-            string argProf2 = "--profile-directory=Profile 1";
+            //string argProf1 = "--profile-directory=Default";
+
+            string[] prof = new[]
+                {
+                    "--profile-directory=Profile 1",
+                    "--profile-directory=Profile 2",
+                    "--profile-directory=Profile 3",
+                    "--profile-directory=Profile 4",
+                    "--profile-directory=Profile 5",
+                    "--profile-directory=Profile 6"
+                };
 
             string url = "https://zombyland.wargm.ru/server/61439/votes";
             string url2 = "https://zombyland.wargm.ru/server/60694/votes";
 
-            WorkBot workBot = new WorkBot(argProf1);
+            foreach (var item in prof)
+            {
+                WorkBot workBot = new WorkBot(item);
 
-            workBot.Vote(url);
-            workBot.Vote(url2);
+                workBot.Vote(url);
+                workBot.Vote(url2);
 
-            workBot.DriverQuit();
+                workBot.DriverQuit();
 
-            System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(2000);
+            }
 
-            WorkBot workBot2 = new WorkBot(argProf2);
+            //WorkBot workBot = new WorkBot(argProf1);
 
-            workBot2.Vote(url);
-            workBot2.Vote(url2);
+            //workBot.Vote(url);
+            //workBot.Vote(url2);
 
-            workBot2.DriverQuit();
+            //workBot.DriverQuit();
+
+            //System.Threading.Thread.Sleep(2000);
+
+            //WorkBot workBot2 = new WorkBot(argProf2);
+
+            //workBot2.Vote(url);
+            //workBot2.Vote(url2);
+
+            //workBot2.DriverQuit();
 
             System.Threading.Thread.Sleep(2000);
 
